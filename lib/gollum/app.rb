@@ -204,7 +204,11 @@ module Precious
           committer.update_working_dir(dir, filename, format)
         end
         committer.commit
-        redirect to(request.referer)
+        if params[:json]
+          "{\"filename\": \"#{reponame}\"}"
+        else
+          redirect to(request.referer)
+        end
       rescue Gollum::DuplicatePageError => e
         @message = "Duplicate page: #{e.message}"
         mustache :error
